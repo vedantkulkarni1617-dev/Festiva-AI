@@ -1,0 +1,6 @@
+{
+  "name": "Festiva AI — Your Smart Celebration Planner",
+  "description": "Intelligent event planning assistant that generates personalized celebration plans, dynamic budgets, preparation timelines, vendor checklists, and creative themes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
