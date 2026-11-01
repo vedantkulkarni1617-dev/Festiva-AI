@@ -52,18 +52,18 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
   const isOverBudget = remainingBudget < 0;
   const percentUsed = totalBudget > 0 ? Math.round((plannedSpend / totalBudget) * 100) : 0;
 
-  // Color palette for slices
+  // Futuristic neon slice colors
   const sliceColors = [
-    '#6366F1', // Indigo
+    '#22D3EE', // Cyan
+    '#818CF8', // Indigo
+    '#A78BFA', // Violet
     '#F43F5E', // Rose
-    '#0EA5E9', // Sky
-    '#10B981', // Emerald
-    '#F59E0B', // Amber
-    '#8B5CF6', // Purple
-    '#EC4899', // Pink
-    '#14B8A6', // Teal
-    '#64748B', // Slate
-    '#EAB308', // Yellow
+    '#34D399', // Emerald
+    '#FBBF24', // Amber
+    '#F472B6', // Pink
+    '#38BDF8', // Sky
+    '#2DD4BF', // Teal
+    '#E879F9', // Fuchsia
   ];
 
   // Start inline editing
@@ -184,25 +184,18 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
     };
   });
 
-  // Calculate SVG arc path
-  const getCoordinatesForPercent = (percent: number) => {
-    const x = Math.cos(2 * Math.PI * percent);
-    const y = Math.sin(2 * Math.PI * percent);
-    return [x, y];
-  };
-
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-slate-100">
       {/* Top Warning Banner if Over Budget */}
       {isOverBudget && (
-        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 shadow-sm">
-          <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/50 flex items-start gap-3 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+          <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
           <div className="space-y-1 text-xs sm:text-sm">
-            <h4 className="font-bold text-rose-900">Budget Limit Exceeded</h4>
-            <p className="text-rose-800">
-              Total planned expenses exceed your budget by{' '}
-              <span className="font-mono font-bold">{formatCurrency(Math.abs(remainingBudget), currency)}</span>.
-              Consider reallocating non-critical items or increasing the total event budget.
+            <h4 className="font-bold text-rose-300">Financial Ceiling Exceeded</h4>
+            <p className="text-rose-200/90">
+              Total planned expenses exceed your target budget by{' '}
+              <span className="font-mono font-bold text-rose-300">{formatCurrency(Math.abs(remainingBudget), currency)}</span>.
+              Reallocate non-critical items or adjust your celebration funding ceiling.
             </p>
           </div>
         </div>
@@ -211,29 +204,31 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
       {/* KPI Cards Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Budget Card */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-1">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div className="glass-panel glass-panel-hover rounded-xl p-5 shadow-sm space-y-1">
+          <div className="text-[11px] font-mono font-semibold text-slate-400 uppercase tracking-wider">
             Total Target Budget
           </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-slate-900">
+          <div className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-white">
             {formatCurrency(totalBudget, currency)}
           </div>
-          <p className="text-xs text-slate-400">Baseline funding allocation</p>
+          <p className="text-xs text-slate-400">Baseline financial allocation</p>
         </div>
 
         {/* Planned Spending Card */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-1">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+        <div className="glass-panel glass-panel-hover rounded-xl p-5 shadow-sm space-y-1">
+          <div className="text-[11px] font-mono font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
             <span>Planned Expenses</span>
-            <span className="text-xs font-mono font-bold text-indigo-600">{percentUsed}% used</span>
+            <span className="font-mono font-bold text-cyan-400">{percentUsed}% utilized</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono tabular-nums text-slate-900">
+          <div className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-white">
             {formatCurrency(plannedSpend, currency)}
           </div>
-          <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
+          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-2">
             <div
-              className={`h-full rounded-full transition-all ${
-                isOverBudget ? 'bg-rose-500' : 'bg-indigo-600'
+              className={`h-full rounded-full transition-all duration-500 ${
+                isOverBudget
+                  ? 'bg-rose-500 shadow-[0_0_10px_#f43f5e]'
+                  : 'bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-[0_0_10px_#22d3ee]'
               }`}
               style={{ width: `${Math.min(percentUsed, 100)}%` }}
             />
@@ -241,24 +236,26 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
         </div>
 
         {/* Remaining Buffer Card */}
-        <div className={`rounded-xl border p-5 shadow-sm space-y-1 ${
-          isOverBudget ? 'bg-rose-50/50 border-rose-200' : 'bg-emerald-50/40 border-emerald-200'
+        <div className={`glass-panel rounded-xl p-5 shadow-sm space-y-1 ${
+          isOverBudget
+            ? 'bg-rose-950/20 border-rose-500/30'
+            : 'bg-emerald-950/20 border-emerald-500/30'
         }`}>
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="text-[11px] font-mono font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             {isOverBudget ? (
-              <TrendingDown className="w-4 h-4 text-rose-600" />
+              <TrendingDown className="w-4 h-4 text-rose-400" />
             ) : (
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
             )}
             <span>{isOverBudget ? 'Budget Deficit' : 'Remaining Buffer'}</span>
           </div>
-          <div className={`text-2xl sm:text-3xl font-bold font-mono tabular-nums ${
-            isOverBudget ? 'text-rose-700' : 'text-emerald-700'
+          <div className={`text-2xl sm:text-3xl font-extrabold font-mono tabular-nums ${
+            isOverBudget ? 'text-rose-400' : 'text-emerald-400'
           }`}>
             {formatCurrency(Math.abs(remainingBudget), currency)}
           </div>
-          <p className="text-xs text-slate-500">
-            {isOverBudget ? 'Over allocated total' : 'Available for contingencies'}
+          <p className="text-xs text-slate-400">
+            {isOverBudget ? 'Exceeds budget ceiling' : 'Available for contingency reserve'}
           </p>
         </div>
       </div>
@@ -266,13 +263,13 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
       {/* Visual Donut Chart & Category Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Donut Visualization (5 cols) */}
-        <div className="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col items-center justify-center space-y-4">
+        <div className="lg:col-span-5 glass-panel rounded-xl p-6 shadow-sm flex flex-col items-center justify-center space-y-4">
           <div className="w-full flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-indigo-600" />
-              <span>Category Allocation</span>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <PieIcon className="w-4 h-4 text-cyan-400" />
+              <span>Category Allocation Matrix</span>
             </h3>
-            <span className="text-xs text-slate-400 font-mono">{items.length} Categories</span>
+            <span className="text-xs text-slate-400 font-mono">{items.length} Nodes</span>
           </div>
 
           {/* SVG Donut */}
@@ -281,7 +278,6 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
               {donutSlices.map((slice, idx) => {
                 const isHovered = hoveredIndex === idx;
                 const strokeWidth = isHovered ? 0.38 : 0.32;
-                // Calculate arc path using dasharray
                 const circumference = 2 * Math.PI * 0.7; // radius 0.7
                 const strokeDasharray = `${slice.ratio * circumference} ${circumference}`;
                 const strokeDashoffset = -slice.startAngle * (circumference / 360);
@@ -298,6 +294,9 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                     strokeDasharray={strokeDasharray}
                     strokeDashoffset={strokeDashoffset}
                     className="transition-all duration-200 cursor-pointer"
+                    style={{
+                      filter: isHovered ? `drop-shadow(0 0 8px ${slice.color})` : 'none',
+                    }}
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   />
@@ -309,47 +308,49 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-4">
               {hoveredIndex !== null && items[hoveredIndex] ? (
                 <div className="space-y-0.5 animate-fadeIn">
-                  <div className="text-[10px] text-slate-400 font-medium truncate max-w-[100px]">
+                  <div className="text-[10px] text-slate-400 font-medium truncate max-w-[110px]">
                     {items[hoveredIndex].category}
                   </div>
-                  <div className="text-sm font-bold font-mono text-slate-900">
+                  <div className="text-sm font-bold font-mono text-cyan-300">
                     {formatCurrency(items[hoveredIndex].actualCost || items[hoveredIndex].estimatedCost, currency)}
                   </div>
-                  <div className="text-[10px] font-semibold text-indigo-600">
+                  <div className="text-[10px] font-semibold text-violet-400 font-mono">
                     {items[hoveredIndex].percentage}%
                   </div>
                 </div>
               ) : (
                 <div className="space-y-0.5">
-                  <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">
-                    Total
+                  <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">
+                    Total Planned
                   </span>
-                  <span className="text-base font-bold font-mono text-slate-900">
+                  <span className="text-base font-extrabold font-mono text-white">
                     {formatCurrency(plannedSpend, currency, true)}
                   </span>
-                  <span className="text-[10px] text-slate-400">allocated</span>
+                  <span className="text-[10px] text-slate-500 font-mono">Allocated</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Interactive Legend Grid */}
-          <div className="w-full grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
+          <div className="w-full grid grid-cols-2 gap-2 text-xs pt-3 border-t border-white/10">
             {donutSlices.slice(0, 8).map((slice, idx) => (
               <div
                 key={idx}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className={`flex items-center gap-1.5 p-1 rounded cursor-pointer transition-colors ${
-                  hoveredIndex === idx ? 'bg-indigo-50 font-semibold' : 'text-slate-600 hover:bg-slate-50'
+                className={`flex items-center gap-1.5 p-1.5 rounded-lg cursor-pointer transition-colors ${
+                  hoveredIndex === idx
+                    ? 'bg-slate-800 text-white font-semibold'
+                    : 'text-slate-400 hover:bg-slate-900'
                 }`}
               >
                 <div
-                  className="w-2.5 h-2.5 rounded-full shrink-0"
-                  style={{ backgroundColor: slice.color }}
+                  className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
+                  style={{ backgroundColor: slice.color, boxShadow: `0 0 6px ${slice.color}` }}
                 />
                 <span className="truncate flex-1">{slice.category}</span>
-                <span className="font-mono tabular-nums text-slate-400 text-[11px]">
+                <span className="font-mono tabular-nums text-slate-500 text-[11px]">
                   {Math.round(slice.ratio * 100)}%
                 </span>
               </div>
@@ -358,33 +359,33 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
         </div>
 
         {/* Right: Category Table & Allocations (7 cols) */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-7 glass-panel rounded-xl p-6 shadow-sm space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Expense Allocations</h3>
-              <p className="text-xs text-slate-500">Edit values to dynamically recalculate remaining balance</p>
+              <h3 className="text-sm font-bold text-white">Expense Matrix</h3>
+              <p className="text-xs text-slate-400">Inline values update totals and donut percentages instantly</p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleExportCSV}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 bg-slate-900/80 hover:bg-slate-800 border border-white/10 rounded-lg transition-colors"
                 title="Export budget spreadsheet"
               >
-                <Download className="w-3.5 h-3.5 text-slate-500" />
+                <Download className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Export CSV</span>
               </button>
               <button
                 onClick={() => setIsAddingCategory(true)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-[0_0_12px_rgba(34,211,238,0.3)] transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Add Category</span>
+                <span>Add Node</span>
               </button>
             </div>
           </div>
 
           {/* Items List */}
-          <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto pr-1">
+          <div className="divide-y divide-white/5 max-h-[500px] overflow-y-auto pr-1">
             {items.map((item, idx) => {
               const isEditing = editingId === item.id;
               const color = sliceColors[idx % sliceColors.length];
@@ -392,19 +393,19 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
               return (
                 <div
                   key={item.id}
-                  className="py-3 hover:bg-slate-50/60 transition-colors px-2 rounded-lg space-y-2"
+                  className="py-3 hover:bg-slate-900/50 transition-colors px-2 rounded-lg space-y-2"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
                       <div
                         className="w-2.5 h-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: color }}
+                        style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}` }}
                       />
-                      <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                      <span className="text-xs sm:text-sm font-semibold text-slate-200 truncate">
                         {item.category}
                       </span>
                       {item.isCustom && (
-                        <span className="text-[10px] font-medium text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-1.5 py-0.5 rounded">
                           Custom
                         </span>
                       )}
@@ -412,7 +413,7 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
 
                     {/* Cost & Edit Action */}
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-xs sm:text-sm font-bold font-mono tabular-nums text-slate-900">
+                      <span className="text-xs sm:text-sm font-bold font-mono tabular-nums text-white">
                         {formatCurrency(item.actualCost || item.estimatedCost, currency)}
                       </span>
                       <span className="text-xs text-slate-400 font-mono w-10 text-right">
@@ -421,7 +422,7 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                       {!isEditing ? (
                         <button
                           onClick={() => handleStartEdit(item)}
-                          className="p-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+                          className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition-colors"
                           title="Edit allocation"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -429,7 +430,7 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                       ) : (
                         <button
                           onClick={() => handleSaveEdit(item.id)}
-                          className="p-1 text-emerald-600 hover:bg-emerald-50 rounded transition-colors"
+                          className="p-1 text-emerald-400 hover:bg-emerald-950/40 rounded transition-colors"
                           title="Save changes"
                         >
                           <Check className="w-4 h-4" />
@@ -438,7 +439,7 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                       {items.length > 2 && (
                         <button
                           onClick={() => handleDeleteCategory(item.id)}
-                          className="p-1 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                          className="p-1 text-slate-600 hover:text-rose-400 hover:bg-rose-950/40 rounded transition-colors"
                           title="Delete category"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -449,9 +450,9 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
 
                   {/* Inline edit inputs if active */}
                   {isEditing ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 bg-slate-900/90 p-3 rounded-lg border border-white/10">
                       <div>
-                        <label className="text-[10px] font-semibold text-slate-500 uppercase">
+                        <label className="text-[10px] font-mono font-semibold text-slate-400 uppercase">
                           Planned Cost ({currency})
                         </label>
                         <input
@@ -459,11 +460,11 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                           min={0}
                           value={editActual}
                           onChange={e => setEditActual(Number(e.target.value))}
-                          className="w-full text-xs px-2 py-1.5 bg-white border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                          className="w-full text-xs px-2 py-1.5 bg-slate-950 border border-white/15 rounded text-white font-mono focus:ring-1 focus:ring-cyan-400"
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-semibold text-slate-500 uppercase">
+                        <label className="text-[10px] font-mono font-semibold text-slate-400 uppercase">
                           Budget Notes
                         </label>
                         <input
@@ -471,24 +472,24 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                           value={editNotes}
                           onChange={e => setEditNotes(e.target.value)}
                           placeholder="e.g. Includes deposit and staff tips"
-                          className="w-full text-xs px-2 py-1.5 bg-white border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                          className="w-full text-xs px-2 py-1.5 bg-slate-950 border border-white/15 rounded text-white focus:ring-1 focus:ring-cyan-400"
                         />
                       </div>
                     </div>
                   ) : item.notes ? (
-                    <p className="text-[11px] text-slate-500 pl-4">{item.notes}</p>
+                    <p className="text-[11px] text-slate-400 pl-4">{item.notes}</p>
                   ) : null}
                 </div>
               );
             })}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
             <span className="flex items-center gap-1.5">
-              <Info className="w-3.5 h-3.5 text-slate-400" />
-              <span>All amounts are estimated planning allocations.</span>
+              <Info className="w-3.5 h-3.5 text-slate-500" />
+              <span>All amounts are live estimated planning allocations.</span>
             </span>
-            <span className="font-mono font-bold text-slate-900">
+            <span className="font-mono font-bold text-white">
               Total: {formatCurrency(plannedSpend, currency)}
             </span>
           </div>
@@ -497,42 +498,42 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
 
       {/* Add Custom Category Modal */}
       {isAddingCategory && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
-            <h3 className="text-base font-bold text-slate-900">Add Custom Expense Category</h3>
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-[#070913]/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#0d1326] rounded-xl max-w-md w-full p-6 shadow-2xl border border-white/15 space-y-4">
+            <h3 className="text-base font-bold text-white">Add Custom Allocation Node</h3>
             <form onSubmit={handleAddCategorySubmit} className="space-y-3">
               <div>
-                <label className="text-xs font-semibold text-slate-700">Category Name</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Category Title</label>
                 <input
                   type="text"
                   required
                   value={newCategoryName}
                   onChange={e => setNewCategoryName(e.target.value)}
                   placeholder="e.g. Fireworks & Special FX, Childcare, Favors"
-                  className="w-full text-sm px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-sm px-3 py-2 bg-slate-900 border border-white/15 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-cyan-400"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700">Estimated Cost ({currency})</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Estimated Cost ({currency})</label>
                 <input
                   type="number"
                   min={0}
                   required
                   value={newCategoryEstimated}
                   onChange={e => setNewCategoryEstimated(Number(e.target.value))}
-                  className="w-full text-sm px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-sm px-3 py-2 bg-slate-900 border border-white/15 rounded-lg text-white font-mono focus:outline-none focus:ring-1 focus:ring-cyan-400"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700">Notes (Optional)</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Notes (Optional)</label>
                 <input
                   type="text"
                   value={newCategoryNotes}
                   onChange={e => setNewCategoryNotes(e.target.value)}
                   placeholder="e.g. 3 vendor quotes requested"
-                  className="w-full text-sm px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-sm px-3 py-2 bg-slate-900 border border-white/15 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-cyan-400"
                 />
               </div>
 
@@ -540,15 +541,15 @@ export const BudgetTab: React.FC<BudgetTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsAddingCategory(false)}
-                  className="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm"
+                  className="px-4 py-1.5 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-sm"
                 >
-                  Add Category
+                  Add Node
                 </button>
               </div>
             </form>

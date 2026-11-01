@@ -9,6 +9,10 @@ import {
   Plus,
   Compass,
   CheckCircle2,
+  ArrowRight,
+  Bot,
+  Zap,
+  Layers,
 } from 'lucide-react';
 import {
   EventRecord,
@@ -28,6 +32,7 @@ import { EventCreateModal } from './components/events/EventCreateModal';
 import { EventSelectorModal } from './components/events/EventSelectorModal';
 import { ExportModal } from './components/tabs/ExportModal';
 import { formatCurrency } from './services/currencyService';
+import { AiOrb } from './components/ui/AiOrb';
 
 export default function App() {
   // Global Event State
@@ -74,7 +79,7 @@ export default function App() {
     setEvents(refreshed);
     setActiveEventId(newEvent.id);
     setActiveTab('overview');
-    showToast(`Created celebration plan for "${newEvent.name}"!`);
+    showToast(`Synthesized celebration plan for "${newEvent.name}"!`);
   };
 
   // Switch active event
@@ -83,7 +88,7 @@ export default function App() {
     setActiveEventId(id);
     const target = events.find(e => e.id === id);
     if (target) {
-      showToast(`Switched to "${target.name}"`);
+      showToast(`Switched workspace to "${target.name}"`);
     }
   };
 
@@ -95,7 +100,7 @@ export default function App() {
     setEvents(refreshed);
     const newActiveId = StorageService.getActiveEventId();
     setActiveEventId(newActiveId);
-    showToast(`Deleted "${toDelete?.name || 'event'}"`);
+    showToast(`Removed "${toDelete?.name || 'event'}"`);
   };
 
   // Reset demo
@@ -109,27 +114,29 @@ export default function App() {
 
   if (!activeEvent) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="text-center space-y-4 max-w-md bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
-            <Sparkles className="w-6 h-6" />
+      <div className="min-h-screen bg-[#070913] bg-nebula flex items-center justify-center p-4 text-slate-100">
+        <div className="text-center space-y-5 max-w-md bg-slate-900/80 p-8 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(34,211,238,0.2)] backdrop-blur-xl">
+          <div className="flex justify-center">
+            <AiOrb state="idle" size="lg" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Welcome to Festiva AI</h2>
-          <p className="text-xs text-slate-500">
-            No celebration plans currently loaded. Start by creating a plan or loading our showcase demo.
-          </p>
-          <div className="flex items-center justify-center gap-3 pt-2">
+          <div className="space-y-1">
+            <h2 className="text-xl font-extrabold text-white">Festiva AI Neural Workspace</h2>
+            <p className="text-xs text-slate-400">
+              No active celebration models found. Initialize a new plan or load our showcase preset to begin.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <button
               onClick={handleResetDemo}
-              className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 shadow-sm"
+              className="w-full sm:w-auto px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all"
             >
-              Load Wedding Showcase Demo
+              Load Showcase Preset
             </button>
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200"
+              className="w-full sm:w-auto px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 rounded-xl border border-white/10"
             >
-              Create New Event
+              Plan New Event
             </button>
           </div>
         </div>
@@ -138,12 +145,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-      {/* Toast Notification */}
+    <div className="min-h-screen flex flex-col bg-[#070913] bg-nebula text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+      {/* Toast Notification with Neon Glow */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 animate-bounce duration-300">
-          <div className="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl flex items-center gap-2 border border-slate-700">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className="px-4 py-2.5 rounded-xl bg-slate-900/95 text-white text-xs font-semibold shadow-[0_0_20px_rgba(34,211,238,0.3)] flex items-center gap-2.5 border border-cyan-500/40 backdrop-blur-xl">
+            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
             <span>{toastMessage}</span>
           </div>
         </div>
@@ -165,6 +172,53 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1">
+        {/* Futuristic Dashboard Hero Section (Visible across tabs or collapsible) */}
+        <div className="no-print border-b border-white/5 bg-gradient-to-b from-[#0a0f24]/50 to-transparent pt-6 pb-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 font-semibold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                    Intelligent Event Architecture
+                  </span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                  Welcome to <span className="text-gradient-cyan">Festiva AI 2.0</span>
+                </h2>
+                <p className="text-xs text-slate-400 max-w-xl">
+                  Synthesizing dynamic budgets, backward date-aware timelines, vendor contracts, and creative aesthetic palettes with Gemini AI.
+                </p>
+              </div>
+
+              {/* Quick Command Actions */}
+              <div className="flex items-center gap-2.5 shrink-0">
+                <button
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all whitespace-nowrap"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Plan an Event</span>
+                </button>
+                <button
+                  onClick={() => setIsSelectorModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-300 bg-slate-900/80 hover:bg-slate-800 border border-white/10 rounded-xl transition-all whitespace-nowrap"
+                >
+                  <Layers className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Switch Events ({events.length})</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('assistant')}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-violet-300 bg-violet-950/40 hover:bg-violet-900/60 border border-violet-500/30 rounded-xl transition-all whitespace-nowrap hidden sm:inline-flex"
+                >
+                  <Bot className="w-3.5 h-3.5" />
+                  <span>AI Assistant</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Event Header Banner (no-print) */}
         <div className="no-print">
           <EventHeader
@@ -324,24 +378,24 @@ export default function App() {
         </div>
       </main>
 
-      {/* Footer (no-print) */}
-      <footer className="bg-white border-t border-slate-200 py-6 mt-12 no-print">
+      {/* Futuristic Dark Footer (no-print) */}
+      <footer className="bg-[#05070e] border-t border-white/10 py-6 mt-12 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded bg-indigo-600 text-white flex items-center justify-center">
+            <div className="w-5 h-5 rounded-lg bg-cyan-950 border border-cyan-500/40 text-cyan-400 flex items-center justify-center">
               <Sparkles className="w-3 h-3" />
             </div>
-            <span className="font-semibold text-slate-800">Festiva AI</span>
+            <span className="font-bold text-white">Festiva AI 2.0</span>
             <span>·</span>
-            <span>Smart Celebration & Event Planner</span>
+            <span className="text-slate-400">Futuristic Celebration & Event Architecture</span>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-400">
-            <span>Server-Side Gemini Generation</span>
+          <div className="flex items-center gap-4 text-slate-500 font-mono text-[11px]">
+            <span>Google Gemini Neural Engine</span>
             <span>·</span>
-            <span>Local Storage Persistence</span>
+            <span>Persistent Workspace Storage</span>
             <span>·</span>
-            <span>Developer Competition Edition</span>
+            <span className="text-cyan-400">Competition Upgrade</span>
           </div>
         </div>
       </footer>
